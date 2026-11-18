@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Japanese Ages 0–10 Flashcards & Quiz</title>
+  <style>
+    :root {
+      --bg: #f0f7ff;
+      --card-bg: #ffffff;
+      --primary: #ff6b6b;
+      --secondary: #4ecdc4;
+      --accent: #ffd166;
+      --text: #2b2d42;
+      --muted: #6c757d;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 12px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 10px;
+      color: var(--text);
+    }
+
+    .mode-toggle {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      background: #dcebfa;
+      padding: 5px;
+      border-radius: 999px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 3px 8px rgba(255, 107, 107, 0.35);
+    }
+
+    /* Flashcard View */
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #dcebfa;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--secondary);
+      width: 9%;
+      transition: width 0.3s ease;
+    }
+
+    .card-scene {
+      width: 100%;
+      height: 410px;
+      perspective: 1000px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(43, 45, 66, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px;
+      border: 4px solid #fff;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(180deg, #fffdf7 0%, #fff4d9 100%);
+      border-color: var(--accent);
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .illustration-box {
+      width: 100%;
+      height: 250px;
+      background: #f8fbff;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .illustration-box svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .age-badge {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .milestone-label {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .jp-kanji {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .jp-kana {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .jp-romaji {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--secondary);
+      background: #fff;
+      padding: 6px 18px;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .irregular-tag {
+      background: #ff6b6b;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.1s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-nav {
+      background: #fff;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .btn-speak {
+      background: var(--secondary);
+      color: #fff;
+      flex: 1.5;
+    }
+
+    /* Quiz Mode */
+    .quiz-container {
+      display: none;
+      width: 100%;
+      max-width: 440px;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-prompt {
+      background: #fff;
+      width: 100%;
+      padding: 18px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .quiz-option {
+      background: #fff;
+      border: 4px solid transparent;
+      border-radius: 18px;
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+    }
+
+    .quiz-option svg {
+      width: 100%;
+      height: 120px;
+    }
+
+    .quiz-option.correct {
+      border-color: #2ec4b6;
+      background: #e6fcf9;
+    }
+
+    .quiz-option.wrong {
+      border-color: #ff6b6b;
+      background: #fff0f0;
+    }
+
+    .status-banner {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      min-height: 28px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎂 Japanese Ages (0–10)</h1>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="tabStudy" onclick="setMode('study')">Study Cards</button>
+      <button class="mode-btn" id="tabQuiz" onclick="setMode('quiz')">Listening Quiz</button>
+    </div>
+  </header>
+
+  <!-- STUDY MODE -->
+  <div class="app-container" id="studyView">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="card-scene" onclick="flipCard()">
+      <div class="card" id="flashcard">
+        <div class="card-face card-front">
+          <div class="illustration-box" id="frontSvg"></div>
+          <div class="age-badge" id="frontAge">0 Years Old</div>
+          <div class="milestone-label" id="frontMilestone">Newborn Baby • Tap card to flip</div>
+        </div>
+        <div class="card-face card-back">
+          <div id="irregularBadge"></div>
+          <div class="jp-kanji" id="backKanji">0歳</div>
+          <div class="jp-kana" id="backKana">ぜろさい</div>
+          <div class="jp-romaji" id="backRomaji">zerosai</div>
+          <div class="milestone-label">Tap Listen to hear pronunciation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-nav" onclick="prevCard()">◀ Prev</button>
+      <button class="btn btn-speak" onclick="speakCurrent()">🔊 Listen</button>
+      <button class="btn btn-nav" onclick="nextCard()">Next ▶</button>
+    </div>
+    <div class="status-banner" id="studyStatus">Card 1 of 11</div>
+  </div>
+
+  <!-- QUIZ MODE -->
+  <div class="quiz-container" id="quizView">
+    <div class="quiz-prompt">
+      <div style="font-weight:700; margin-bottom:10px;">Tap the picture that matches the age you hear!</div>
+      <button class="btn btn-speak" style="width:100%;" onclick="speakQuizTarget()">🔊 Play Sound Again</button>
+    </div>
+    <div class="quiz-grid" id="quizGrid"></div>
+    <div class="status-banner" id="quizStatus">Score: 0</div>
+  </div>
+
+  <script>
+    const deck = [
+      {
+        age: 0, en: "0 Years Old", milestone: "Newborn Baby",
+        kanji: "0歳", kana: "ぜろさい", tts: "ぜろさい", romaji: "zerosai", irregular: false,
+        color: "#ffe5ec", icon: "👶🍼", caption: "Swaddled Newborn"
+      },
+      {
+        age: 1, en: "1 Year Old", milestone: "First Steps & 1 Candle",
+        kanji: "1歳", kana: "いっさい", tts: "いっさい", romaji: "issai", irregular: true,
+        color: "#ffcad4", icon: "🚼🧸", caption: "Baby Walking"
+      },
+      {
+        age: 2, en: "2 Years Old", milestone: "Toddler & Push Bike",
+        kanji: "2歳", kana: "にさい", tts: "にさい", romaji: "nisai", irregular: false,
+        color: "#fde4cf", icon: "🛴🐥", caption: "Toddler Play"
+      },
+      {
+        age: 3, en: "3 Years Old", milestone: "Preschool & Building Blocks",
+        kanji: "3歳", kana: "さんさい", tts: "さんさい", romaji: "sansai", irregular: false,
+        color: "#fbf8cc", icon: "🧱🎨", caption: "Preschooler"
+      },
+      {
+        age: 4, en: "4 Years Old", milestone: "Finger Painting & Crafts",
+        kanji: "4歳", kana: "よんさい", tts: "よんさい", romaji: "yonsai", irregular: false,
+        color: "#b9fbc0", icon: "🖌️🖍️", caption: "Little Artist"
+      },
+      {
+        age: 5, en: "5 Years Old", milestone: "Kindergarten Backpack",
+        kanji: "5歳", kana: "ごさい", tts: "ごさい", romaji: "gosai", irregular: false,
+        color: "#98f5e1", icon: "🎒🌈", caption: "Kindergartener"
+      },
+      {
+        age: 6, en: "6 Years Old", milestone: "First Grade School Bag",
+        kanji: "6歳", kana: "ろくさい", tts: "ろくさい", romaji: "rokusai", irregular: false,
+        color: "#8eecf5", icon: "🏫✏️", caption: "1st Grader"
+      },
+      {
+age: 7, en: "7 Years Old", milestone: "Riding a Two-Wheel Bike",
+kanji: "7歳", kana: "ななさい", tts: "ななさい", romaji: "nanasai", irregular: false,
+color: "#90dbf4", icon: "🚲⭐", caption: "Big Kid Bike"
+},
+{
+age: 8, en: "8 Years Old", milestone: "Playing Soccer & Sports",
+kanji: "8歳", kana: "はっさい", tts: "はっさい", romaji: "hassai", irregular: true,
+color: "#a3c4f3", icon: "⚽🏅", caption: "Junior Athlete"
+},
+{
+age: 9, en: "9 Years Old", milestone: "Reading Chapter Books",
+kanji: "9歳", kana: "きゅうさい", tts: "きゅうさい", romaji: "kyuusai", irregular: false,
+color: "#cfbaf0", icon: "📚🎸", caption: "Bookworm"
+},
+{
+age: 10, en: "10 Years Old", milestone: "Double Digits Celebration!",
+kanji: "10歳", kana: "じゅっさい", tts: "じゅっさい", romaji: "jussai", irregular: true,
+color: "#f1c0e8", icon: "🎂🔟🏆", caption: "10th Birthday!"
+}
+];
+function buildIllustrationSVG(item) {
+let candles = "";
+for (let i = 0; i < item.age; i++) {
+const x = 60 + i * 28;
+candles += <rect x="${x}" y="175" width="10" height="28" rx="3" fill="#ff6b6b"/> <circle cx="${x + 5}" cy="168" r="5" fill="#ffd166"/>;
+}
+return `
+
+
+${candles}
+
+`;
+}
+let currentIndex = 0;
+let visitedSet = new Set([0]);
+let quizTarget = null;
+let quizScore = 0;
+function renderCard() {
+const item = deck[currentIndex];
+const card = document.getElementById("flashcard");
+card.classList.remove("is-flipped");
+document.getElementById("frontSvg").innerHTML = buildIllustrationSVG(item);
+document.getElementById("frontAge").textContent = item.en;
+document.getElementById("frontMilestone").textContent = ${item.milestone} • Tap to flip;
+document.getElementById("backKanji").textContent = item.kanji;
+document.getElementById("backKana").textContent = item.kana;
+document.getElementById("backRomaji").textContent = item.romaji;
+document.getElementById("irregularBadge").innerHTML = item.irregular
+? <span class="irregular-tag">Special Sound!</span>
+: "";
+const pct = ((currentIndex + 1) / deck.length) * 100;
+document.getElementById("progressFill").style.width = ${pct}%;
+document.getElementById("studyStatus").textContent = Card ${currentIndex + 1} of ${deck.length};
+visitedSet.add(currentIndex);
+if (visitedSet.size === deck.length) {
+playCelebrationChime();
+document.getElementById("studyStatus").textContent = "🎉 Amazing! You viewed all 11 ages!";
+}
+}
+function flipCard() {
+const card = document.getElementById("flashcard");
+card.classList.toggle("is-flipped");
+if (card.classList.contains("is-flipped")) {
+speakJapanese(deck[currentIndex].tts);
+}
+}
+function nextCard() {
+currentIndex = (currentIndex + 1) % deck.length;
+renderCard();
+}
+function prevCard() {
+currentIndex = (currentIndex - 1 + deck.length) % deck.length;
+renderCard();
+}
+function speakCurrent() {
+speakJapanese(deck[currentIndex].tts);
+}
+function speakJapanese(kanaText) {
+if (!("speechSynthesis" in window)) return;
+window.speechSynthesis.cancel();
+const utterance = new SpeechSynthesisUtterance(kanaText);
+utterance.lang = "ja-JP";
+utterance.pitch = 1.65; // Child-like pitch
+utterance.rate = 0.92;
+const voices = window.speechSynthesis.getVoices();
+const jpVoice = voices.find(v => v.lang.includes("ja") && (v.name.includes("Female") || v.name.includes("Kyoko") || v.name.includes("Haruka") || v.name.includes("Google")))
+|| voices.find(v => v.lang.includes("ja"));
+if (jpVoice) utterance.voice = jpVoice;
+window.speechSynthesis.speak(utterance);
+}
+function playCelebrationChime() {
+try {
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+const notes = [523.25, 659.25, 783.99, 1046.50];
+notes.forEach((freq, idx) => {
+const osc = ctx.createOscillator();
+const gain = ctx.createGain();
+osc.type = "triangle";
+osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.12);
+gain.gain.setValueAtTime(0.18, ctx.currentTime + idx * 0.12);
+gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.12 + 0.35);
+osc.connect(gain);
+gain.connect(ctx.destination);
+osc.start(ctx.currentTime + idx * 0.12);
+osc.stop(ctx.currentTime + idx * 0.12 + 0.35);
+});
+} catch (e) {}
+}
+function setMode(mode) {
+document.getElementById("tabStudy").classList.toggle("active", mode === "study");
+document.getElementById("tabQuiz").classList.toggle("active", mode === "quiz");
+document.getElementById("studyView").style.display = mode === "study" ? "flex" : "none";
+document.getElementById("quizView").style.display = mode === "quiz" ? "flex" : "none";
+if (mode === "quiz") startQuizRound();
+}
+function startQuizRound() {
+const shuffled = [...deck].sort(() => Math.random() - 0.5);
+const choices = shuffled.slice(0, 4);
+quizTarget = choices[Math.floor(Math.random() * choices.length)];
+const grid = document.getElementById("quizGrid");
+grid.innerHTML = "";
+choices.forEach(item => {
+const div = document.createElement("div");
+div.className = "quiz-option";
+div.innerHTML = ${buildIllustrationSVG(item)}<strong style="margin-top:6px;">${item.en}</strong>;
+div.onclick = () => checkQuizAnswer(div, item);
+grid.appendChild(div);
+});
+setTimeout(() => speakQuizTarget(), 250);
+}
+function speakQuizTarget() {
+if (quizTarget) speakJapanese(quizTarget.tts);
+}
+function checkQuizAnswer(element, item) {
+if (item.age === quizTarget.age) {
+element.classList.add("correct");
+quizScore++;
+playCelebrationChime();
+document.getElementById("quizStatus").textContent = ⭐ Great job! (${item.kana} = ${item.en}) • Score: ${quizScore};
+setTimeout(() => startQuizRound(), 1400);
+} else {
+element.classList.add("wrong");
+document.getElementById("quizStatus").textContent = Try again! Listen carefully... • Score: ${quizScore};
+speakQuizTarget();
+}
+}
+if ("speechSynthesis" in window) {
+window.speechSynthesis.onvoiceschanged = () => {};
+}
+renderCard();
