@@ -17,14 +17,14 @@
   .quiz-container { display: none; }
   .progress-bar { width: 100%; height: 10px; background: #dcebfa; border-radius: 999px; overflow: hidden; margin-bottom: 14px; }
   .progress-fill { height: 100%; background: var(--sec); width: 9%; transition: width 0.3s; }
-  .card-scene { width: 100%; height: 400px; perspective: 1000px; margin-bottom: 16px; cursor: pointer; }
+  .card-scene { width: 100%; height: 420px; perspective: 1000px; margin-bottom: 16px; cursor: pointer; }
   .card { width: 100%; height: 100%; position: relative; transition: transform 0.55s; transform-style: preserve-3d; }
   .card.is-flipped { transform: rotateY(180deg); }
-  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--card); border-radius: 24px; box-shadow: 0 10px 25px rgba(43,45,66,0.1); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 18px; border: 4px solid #fff; }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--card); border-radius: 24px; box-shadow: 0 10px 25px rgba(43,45,66,0.1); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 16px; border: 4px solid #fff; }
   .card-back { transform: rotateY(180deg); background: linear-gradient(180deg, #fffdf7 0%, #fff4d9 100%); border-color: var(--acc); justify-content: center; gap: 12px; text-align: center; }
-  .illustration-box { width: 100%; height: 245px; background: #f8fbff; border-radius: 18px; overflow: hidden; }
+  .illustration-box { width: 100%; height: 270px; background: #f8fbff; border-radius: 18px; overflow: hidden; }
   .illustration-box svg { width: 100%; height: 100%; }
-  .age-badge { font-size: 2rem; font-weight: 800; color: var(--pri); }
+  .age-badge { font-size: 1.95rem; font-weight: 800; color: var(--pri); }
   .milestone-label { font-size: 0.95rem; color: var(--mut); font-weight: 600; }
   .jp-kanji { font-size: 3.2rem; font-weight: 800; }
   .jp-kana { font-size: 2rem; font-weight: 700; color: var(--pri); }
@@ -38,7 +38,7 @@
   .quiz-prompt { background: #fff; width: 100%; padding: 18px; border-radius: 20px; text-align: center; margin-bottom: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
   .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
   .quiz-option { background: #fff; border: 4px solid transparent; border-radius: 18px; padding: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-  .quiz-option svg { width: 100%; height: 115px; }
+  .quiz-option svg { width: 100%; height: 130px; }
   .quiz-option.correct { border-color: #2ec4b6; background: #e6fcf9; }
   .quiz-option.wrong { border-color: #ff6b6b; background: #fff0f0; }
   .status-banner { margin-top: 12px; font-weight: 700; font-size: 1.05rem; min-height: 28px; text-align: center; }
@@ -87,24 +87,39 @@
 </div>
 <script>
 const deck = [
-  { age: 0, en: "0 Years Old", milestone: "Newborn Baby", kanji: "0歳", kana: "ぜろさい", romaji: "zerosai", irr: 0, bg: "#ffe5ec", icon: "👶🍼", cap: "Swaddled Newborn" },
-  { age: 1, en: "1 Year Old", milestone: "First Steps & 1 Candle", kanji: "1歳", kana: "いっさい", romaji: "issai", irr: 1, bg: "#ffcad4", icon: "🚼🧸", cap: "Baby Walking" },
-  { age: 2, en: "2 Years Old", milestone: "Toddler & Push Bike", kanji: "2歳", kana: "にさい", romaji: "nisai", irr: 0, bg: "#fde4cf", icon: "🛴🐥", cap: "Toddler Play" },
-  { age: 3, en: "3 Years Old", milestone: "Preschool & Building Blocks", kanji: "3歳", kana: "さんさい", romaji: "sansai", irr: 0, bg: "#fbf8cc", icon: "🧱🎨", cap: "Preschooler" },
-  { age: 4, en: "4 Years Old", milestone: "Finger Painting & Crafts", kanji: "4歳", kana: "よんさい", romaji: "yonsai", irr: 0, bg: "#b9fbc0", icon: "🖌️🖍️", cap: "Little Artist" },
-  { age: 5, en: "5 Years Old", milestone: "Kindergarten Backpack", kanji: "5歳", kana: "ごさい", romaji: "gosai", irr: 0, bg: "#98f5e1", icon: "🎒🌈", cap: "Kindergartener" },
-  { age: 6, en: "6 Years Old", milestone: "First Grade School Bag", kanji: "6歳", kana: "ろくさい", romaji: "rokusai", irr: 0, bg: "#8eecf5", icon: "🏫✏️", cap: "1st Grader" },
-  { age: 7, en: "7 Years Old", milestone: "Riding a Two-Wheel Bike", kanji: "7歳", kana: "ななさい", romaji: "nanasai", irr: 0, bg: "#90dbf4", icon: "🚲⭐", cap: "Big Kid Bike" },
-  { age: 8, en: "8 Years Old", milestone: "Playing Soccer & Sports", kanji: "8歳", kana: "はっさい", romaji: "hassai", irr: 1, bg: "#a3c4f3", icon: "⚽🏅", cap: "Junior Athlete" },
-  { age: 9, en: "9 Years Old", milestone: "Reading Chapter Books", kanji: "9歳", kana: "きゅうさい", romaji: "kyuusai", irr: 0, bg: "#cfbaf0", icon: "📚🎸", cap: "Bookworm" },
-  { age: 10, en: "10 Years Old", milestone: "Double Digits Celebration!", kanji: "10歳", kana: "じゅっさい", romaji: "jussai", irr: 1, bg: "#f1c0e8", icon: "🎂🔟🏆", cap: "10th Birthday!" }
+  { age: 0, en: "0 Years Old", milestone: "Newborn Baby", kanji: "0歳", kana: "ぜろさい", romaji: "zerosai", irr: 0, bg: "#ffe5ec", cap: "0 • Newborn Baby" },
+  { age: 1, en: "1 Year Old", milestone: "Baby Taking First Steps", kanji: "1歳", kana: "いっさい", romaji: "issai", irr: 1, bg: "#ffcad4", cap: "1 • First Steps" },
+  { age: 2, en: "2 Years Old", milestone: "Toddler with Teddy Bear", kanji: "2歳", kana: "にさい", romaji: "nisai", irr: 0, bg: "#fde4cf", cap: "2 • Toddler" },
+  { age: 3, en: "3 Years Old", milestone: "Preschooler with Blocks", kanji: "3歳", kana: "さんさい", romaji: "sansai", irr: 0, bg: "#fbf8cc", cap: "3 • Preschooler" },
+  { age: 4, en: "4 Years Old", milestone: "4-Year-Old Painting", kanji: "4歳", kana: "よんさい", romaji: "yonsai", irr: 0, bg: "#b9fbc0", cap: "4 • Little Artist" },
+  { age: 5, en: "5 Years Old", milestone: "Kindergartener with Bag", kanji: "5歳", kana: "ごさい", romaji: "gosai", irr: 0, bg: "#98f5e1", cap: "5 • Kindergartener" },
+  { age: 6, en: "6 Years Old", milestone: "1st Grader at School", kanji: "6歳", kana: "ろくさい", romaji: "rokusai", irr: 0, bg: "#8eecf5", cap: "6 • Primary School" },
+  { age: 7, en: "7 Years Old", milestone: "7-Year-Old Riding a Bike", kanji: "7歳", kana: "ななさい", romaji: "nanasai", irr: 0, bg: "#90dbf4", cap: "7 • Riding a Bike" },
+  { age: 8, en: "8 Years Old", milestone: "8-Year-Old Playing Football", kanji: "8歳", kana: "はっさい", romaji: "hassai", irr: 1, bg: "#a3c4f3", cap: "8 • Sports Kid" },
+  { age: 9, en: "9 Years Old", milestone: "9-Year-Old Reading a Book", kanji: "9歳", kana: "きゅうさい", romaji: "kyuusai", irr: 0, bg: "#cfbaf0", cap: "9 • Young Reader" },
+  { age: 10, en: "10 Years Old", milestone: "10th Birthday Double Digits!", kanji: "10歳", kana: "じゅっさい", romaji: "jussai", irr: 1, bg: "#f1c0e8", cap: "10 • Double Digits!" }
 ];
-function svgFor(d) {
-  let c = "";
-  for (let i = 0; i < d.age; i++) c += `<rect x="${60+i*28}" y="175" width="10" height="28" rx="3" fill="#ff6b6b"/><circle cx="${65+i*28}" cy="168" r="5" fill="#ffd166"/>`;
-  return `<svg viewBox="0 0 400 260" xmlns="http://w3.org"><rect width="400" height="260" rx="18" fill="${d.bg}"/><circle cx="200" cy="105" r="72" fill="#fff" opacity="0.85"/><text x="200" y="122" font-size="64" text-anchor="middle">${d.icon}</text><text x="200" y="238" font-size="22" font-weight="bold" fill="#2b2d42" text-anchor="middle">${d.cap}</text>${c}</svg>`;
+
+function personScene(age) {
+  if (age === 0) return `<ellipse cx="200" cy="145" rx="68" ry="38" fill="#fff" stroke="#ffb3c6" stroke-width="4"/><circle cx="152" cy="138" r="24" fill="#ffe0bd"/><path d="M145 116 Q152 104 160 116" stroke="#8d5524" stroke-width="3" fill="none"/><path d="M144 136 Q148 140 152 136 M156 136 Q160 140 164 136" stroke="#333" stroke-width="2" fill="none"/><circle cx="154" cy="147" r="5" fill="#ff758f"/><text x="245" y="105" font-size="30">🍼</text>`;
+  if (age === 1) return `<circle cx="200" cy="88" r="26" fill="#ffe0bd"/><path d="M196 63 Q202 52 208 64" stroke="#5c3a21" stroke-width="4" fill="none"/><circle cx="192" cy="86" r="3" fill="#333"/><circle cx="208" cy="86" r="3" fill="#333"/><path d="M193 97 Q200 104 207 97" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="178" y="114" width="44" height="42" rx="14" fill="#ff8fab"/><rect x="180" y="152" width="40" height="18" rx="8" fill="#fff"/><path d="M178 124 L152 112 M222 124 L248 112" stroke="#ffe0bd" stroke-width="9" stroke-linecap="round"/><path d="M188 170 L182 196 M212 170 L218 196" stroke="#ffe0bd" stroke-width="10" stroke-linecap="round"/><text x="255" y="185" font-size="28">🧸</text>`;
+  if (age === 2) return `<circle cx="200" cy="82" r="26" fill="#ffe0bd"/><path d="M174 78 Q200 46 226 78" fill="#4a2c18"/><circle cx="192" cy="82" r="3" fill="#333"/><circle cx="208" cy="82" r="3" fill="#333"/><path d="M193 93 Q200 100 207 93" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="176" y="108" width="48" height="48" rx="12" fill="#ffd166"/><rect x="180" y="156" width="16" height="36" rx="6" fill="#4ea8de"/><rect x="204" y="156" width="16" height="36" rx="6" fill="#4ea8de"/><path d="M176 118 L154 138 M224 118 L244 136" stroke="#ffe0bd" stroke-width="9" stroke-linecap="round"/><text x="254" y="150" font-size="32">🦆</text>`;
+  if (age === 3) return `<circle cx="200" cy="78" r="25" fill="#ffe0bd"/><circle cx="174" cy="72" r="10" fill="#3d2314"/><circle cx="226" cy="72" r="10" fill="#3d2314"/><path d="M175 74 Q200 45 225 74" fill="#3d2314"/><circle cx="192" cy="78" r="3" fill="#333"/><circle cx="208" cy="78" r="3" fill="#333"/><path d="M193 89 Q200 96 207 89" stroke="#e05a47" stroke-width="2.5" fill="none"/><path d="M176 104 L224 104 L232 160 L168 160 Z" fill="#ff6b6b"/><rect x="184" y="160" width="12" height="34" rx="5" fill="#ffe0bd"/><rect x="204" y="160" width="12" height="34" rx="5" fill="#ffe0bd"/><text x="135" y="188" font-size="32">🧱</text>`;
+  if (age === 4) return `<circle cx="190" cy="76" r="25" fill="#ffe0bd"/><path d="M165 72 Q190 42 215 72" fill="#6f4e37"/><circle cx="182" cy="76" r="3" fill="#333"/><circle cx="198" cy="76" r="3" fill="#333"/><path d="M183 87 Q190 94 197 87" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="168" y="102" width="44" height="54" rx="10" fill="#4ecdc4"/><rect x="172" y="156" width="14" height="38" rx="5" fill="#2b2d42"/><rect x="194" y="156" width="14" height="38" rx="5" fill="#2b2d42"/><path d="M212 114 L244 102" stroke="#ffe0bd" stroke-width="9" stroke-linecap="round"/><text x="248" y="112" font-size="34">🎨</text>`;
+  if (age === 5) return `<rect x="162" y="100" width="56" height="52" rx="12" fill="#ff9f1c"/><circle cx="200" cy="72" r="24" fill="#ffe0bd"/><path d="M176 68 Q200 38 224 68" fill="#2b2d42"/><circle cx="192" cy="72" r="3" fill="#333"/><circle cx="208" cy="72" r="3" fill="#333"/><path d="M193 83 Q200 90 207 83" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="178" y="98" width="44" height="56" rx="10" fill="#48bfe3"/><rect x="182" y="154" width="14" height="42" rx="5" fill="#3a0ca3"/><rect x="204" y="154" width="14" height="42" rx="5" fill="#3a0ca3"/><text x="248" y="135" font-size="30">🎒</text>`;
+  if (age === 6) return `<rect x="162" y="96" width="54" height="56" rx="8" fill="#e63946"/><circle cx="200" cy="68" r="23" fill="#ffe0bd"/><path d="M175 60 L225 60 L218 46 L182 46 Z" fill="#ffd166"/><circle cx="192" cy="68" r="3" fill="#333"/><circle cx="208" cy="68" r="3" fill="#333"/><path d="M193 79 Q200 86 207 79" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="178" y="93" width="44" height="58" rx="8" fill="#1d3557"/><rect x="182" y="151" width="14" height="45" rx="5" fill="#457b9d"/><rect x="204" y="151" width="14" height="45" rx="5" fill="#457b9d"/><text x="250" y="130" font-size="30">🏫</text>`;
+  if (age === 7) return `<circle cx="155" cy="175" r="24" fill="none" stroke="#2b2d42" stroke-width="5"/><circle cx="245" cy="175" r="24" fill="none" stroke="#2b2d42" stroke-width="5"/><path d="M155 175 L195 140 L235 140 L245 175 M195 140 L205 175 L155 175" stroke="#ff6b6b" stroke-width="5" fill="none"/><circle cx="200" cy="72" r="22" fill="#ffe0bd"/><path d="M178 66 Q200 42 222 66" fill="#4ecdc4"/><circle cx="193" cy="72" r="3" fill="#333"/><circle cx="207" cy="72" r="3" fill="#333"/><rect x="182" y="95" width="36" height="46" rx="10" fill="#ffd166"/>`;
+  if (age === 8) return `<circle cx="195" cy="66" r="22" fill="#ffe0bd"/><path d="M173 62 Q195 36 217 62" fill="#3d2314"/><circle cx="188" cy="66" r="3" fill="#333"/><circle cx="202" cy="66" r="3" fill="#333"/><path d="M189 76 Q195 83 201 76" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="175" y="90" width="40" height="54" rx="8" fill="#2ec4b6"/><rect x="178" y="144" width="13" height="50" rx="5" fill="#2b2d42"/><rect x="199" y="144" width="13" height="42" rx="5" fill="#2b2d42"/><text x="235" y="192" font-size="34">⚽</text>`;
+  if (age === 9) return `<circle cx="200" cy="66" r="22" fill="#ffe0bd"/><circle cx="174" cy="62" r="9" fill="#5c3a21"/><circle cx="226" cy="62" r="9" fill="#5c3a21"/><path d="M178 62 Q200 36 222 62" fill="#5c3a21"/><circle cx="193" cy="66" r="3" fill="#333"/><circle cx="207" cy="66" r="3" fill="#333"/><rect x="178" y="90" width="44" height="56" rx="10" fill="#9b5de5"/><rect x="182" y="146" width="14" height="50" rx="5" fill="#2b2d42"/><rect x="204" y="146" width="14" height="50" rx="5" fill="#2b2d42"/><text x="200" y="136" font-size="36" text-anchor="middle">📖</text>`;
+  return `<circle cx="200" cy="64" r="22" fill="#ffe0bd"/><path d="M178 60 Q200 34 222 60" fill="#2b2d42"/><circle cx="193" cy="64" r="3" fill="#333"/><circle cx="207" cy="64" r="3" fill="#333"/><path d="M192 74 Q200 82 208 74" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="176" y="88" width="48" height="58" rx="10" fill="#ff6b6b"/><rect x="182" y="146" width="14" height="52" rx="5" fill="#1d3557"/><rect x="204" y="146" width="14" height="52" rx="5" fill="#1d3557"/><text x="142" y="135" font-size="34">🎂</text><text x="256" y="135" font-size="34">🔟</text>`;
 }
+
+function svgFor(d) {
+  return `<svg viewBox="0 0 400 260" xmlns="http://w3.org"><rect width="400" height="260" rx="18" fill="${d.bg}"/><ellipse cx="200" cy="202" rx="115" ry="16" fill="#000" opacity="0.07"/>${personScene(d.age)}<text x="200" y="242" font-size="21" font-weight="bold" fill="#2b2d42" text-anchor="middle">${d.cap}</text></svg>`;
+}
+
 let idx = 0, seen = new Set(), target = null, score = 0;
+
 function render() {
   const d = deck[idx];
   document.getElementById("flashcard").classList.remove("is-flipped");
@@ -120,42 +135,9 @@ function render() {
   seen.add(idx);
   if (seen.size === deck.length) { chime(); document.getElementById("studyStatus").textContent = "🎉 Amazing! You viewed all 11 ages!"; }
 }
+
 function speak(txt) {
   if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(txt);
-  u.lang = "ja-JP"; u.pitch = 1.65; u.rate = 0.92;
-  const v = window.speechSynthesis.getVoices().find(x => x.lang.includes("ja"));
-  if (v) u.voice = v;
-  window.speechSynthesis.speak(u);
-}
-function chime() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
-      const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = "triangle"; o.frequency.setValueAtTime(f, ctx.currentTime + i * 0.12);
-      g.gain.setValueAtTime(0.18, ctx.currentTime + i * 0.12);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.35);
-      o.connect(g); g.connect(ctx.destination); o.start(ctx.currentTime + i * 0.12); o.stop(ctx.currentTime + i * 0.12 + 0.35);
-    });
-  } catch (e) {}
-}
-function nextQuiz() {
-  const opts = [...deck].sort(() => Math.random() - 0.5).slice(0, 4);
-  target = opts[Math.floor(Math.random() * 4)];
-  const grid = document.getElementById("quizGrid"); grid.innerHTML = "";
-  opts.forEach(d => {
-    const el = document.createElement("div"); el.className = "quiz-option";
-    el.innerHTML = svgFor(d) + `<strong style="margin-top:6px;">${d.en}</strong>`;
-    el.onclick = () => {
-      if (d.age === target.age) { el.classList.add("correct"); score++; chime(); document.getElementById("quizStatus").textContent = `⭐ Great job! (${d.kana}) • Score: ${score}`; setTimeout(nextQuiz, 1400); }
-      else { el.classList.add("wrong"); document.getElementById("quizStatus").textContent = `Try again! • Score: ${score}`; speak(target.kana); }
-    };
-    grid.appendChild(el);
-  });
-  setTimeout(() => speak(target.kana), 250);
-}
 document.getElementById("cardScene").onclick = () => { const c = document.getElementById("flashcard"); c.classList.toggle("is-flipped"); if (c.classList.contains("is-flipped")) speak(deck[idx].kana); };
 document.getElementById("btnPrev").onclick = () => { idx = (idx - 1 + deck.length) % deck.length; render(); };
 document.getElementById("btnNext").onclick = () => { idx = (idx + 1) % deck.length; render(); };
