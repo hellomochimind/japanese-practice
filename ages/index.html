@@ -1,53 +1,48 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Japanese Ages 0-10</title>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:system-ui,sans-serif;background:#f0f7ff;color:#2b2d42;display:flex;flex-direction:column;align-items:center;padding:16px}
-.tabs{display:flex;gap:8px;background:#dcebfa;padding:5px;border-radius:99px;width:100%;max-width:420px;margin-bottom:12px}
-.tab{flex:1;border:none;padding:10px;border-radius:99px;font-weight:700;background:transparent;cursor:pointer}.tab.on{background:#ff6b6b;color:#fff}
-.box{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center}.hide{display:none!important}
-.card{width:100%;height:395px;background:#fff;border-radius:24px;box-shadow:0 8px 20px rgba(0,0,0,.1);margin-bottom:14px;cursor:pointer;overflow:hidden}
-.face{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px}
-.back{background:#fff9eb;justify-content:center;gap:14px;text-align:center;border:4px solid #ffd166;border-radius:24px}
-.pic{width:100%;height:255px;border-radius:16px;overflow:hidden}.pic svg{width:100%;height:100%}
-.row{display:flex;gap:10px;width:100%}.btn{border:none;border-radius:14px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;flex:1;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.08)}.say{background:#4ecdc4;color:#fff;flex:1.5}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}.opt{background:#fff;border:4px solid transparent;border-radius:16px;padding:8px;text-align:center;cursor:pointer}.opt svg{width:100%;height:115px}.ok{border-color:#2ec4b6;background:#e6fcf9}.no{border-color:#ff6b6b;background:#fff0f0}
-</style></head><body>
-<h2 style="margin:0 0 10px">🎂 Japanese Ages (0–10)</h2>
-<div class="tabs"><button class="tab on" id="t1">Study Cards</button><button class="tab" id="t2">Listening Quiz</button></div>
-<div class="box" id="v1">
-  <div class="card" id="cd">
-    <div class="face" id="front"><div class="pic" id="svg"></div><div id="en" style="font-size:1.8rem;font-weight:800;color:#ff6b6b"></div><div id="ms" style="color:#6c757d;font-weight:600"></div></div>
-    <div class="face back hide" id="back"><div id="ir"></div><div id="kj" style="font-size:3.4rem;font-weight:800;color:#2b2d42"></div><div id="kn" style="font-size:2.2rem;font-weight:700;color:#ff6b6b"></div><div id="rm" style="font-size:1.5rem;font-weight:700;color:#4ecdc4;background:#fff;padding:6px 20px;border-radius:99px;box-shadow:0 2px 6px rgba(0,0,0,.06)"></div><div style="color:#6c757d;font-size:.9rem;font-weight:600">Tap card to flip back</div></div>
-  </div>
-  <div class="row"><button class="btn" id="pv">◀ Prev</button><button class="btn say" id="sp">🔊 Listen</button><button class="btn" id="nx">Next ▶</button></div>
-  <p id="st" style="font-weight:700"></p>
-</div>
-<div class="box hide" id="v2"><button class="btn say" style="width:100%;margin-bottom:12px" id="rp">🔊 Play Sound Again</button><div class="grid" id="gd"></div><p id="qs" style="font-weight:700"></p></div>
-<script>
-const D=[
-{a:0,en:"0 Years Old",ms:"Newborn Baby",kj:"0歳",kn:"ぜろさい",rm:"zerosai",ir:0,bg:"#ffe5ec",ic:"👶🍼"},
-{a:1,en:"1 Year Old",ms:"First Steps",kj:"1歳",kn:"いっさい",rm:"issai",ir:1,bg:"#ffcad4",ic:"🚼🧸"},
-{a:2,en:"2 Years Old",ms:"Toddler Play",kj:"2歳",kn:"にさい",rm:"nisai",ir:0,bg:"#fde4cf",ic:"🛴🐥"},
-{a:3,en:"3 Years Old",ms:"Preschool Blocks",kj:"3歳",kn:"さんさい",rm:"sansai",ir:0,bg:"#fbf8cc",ic:"🧱🎨"},
-{a:4,en:"4 Years Old",ms:"Little Artist",kj:"4歳",kn:"よんさい",rm:"yonsai",ir:0,bg:"#b9fbc0",ic:"🖌️🖍️"},
-{a:5,en:"5 Years Old",ms:"Kindergartener",kj:"5歳",kn:"ごさい",rm:"gosai",ir:0,bg:"#98f5e1",ic:"🎒🌈"},
-{a:6,en:"6 Years Old",ms:"1st Grade School",kj:"6歳",kn:"ろくさい",rm:"rokusai",ir:0,bg:"#8eecf5",ic:"🏫✏️"},
-{a:7,en:"7 Years Old",ms:"Riding a Bike",kj:"7歳",kn:"ななさい",rm:"nanasai",ir:0,bg:"#90dbf4",ic:"🚲⭐"},
-{a:8,en:"8 Years Old",ms:"Playing Football",kj:"8歳",kn:"はっさい",rm:"hassai",ir:1,bg:"#a3c4f3",ic:"⚽🏅"},
-{a:9,en:"9 Years Old",ms:"Reading Books",kj:"9歳",kn:"きゅうさい",rm:"kyuusai",ir:0,bg:"#cfbaf0",ic:"📚🎸"},
-{a:10,en:"10 Years Old",ms:"Double Digits!",kj:"10歳",kn:"じゅっさい",rm:"jussai",ir:1,bg:"#f1c0e8",ic:"🎂🔟"}
-];
-function pic(d){const y=95-d.a*3,h=38+d.a*2.5,l=30+d.a*2.2,p=d.a===0?`<ellipse cx="165" cy="145" rx="58" ry="34" fill="#fff" stroke="#ffb3c6" stroke-width="3"/><circle cx="125" cy="138" r="22" fill="#ffe0bd"/><circle cx="127" cy="146" r="4" fill="#ff758f"/>`:`<circle cx="165" cy="${y}" r="22" fill="#ffe0bd"/><path d="M143 ${y-4} Q165 ${y-30} 187 ${y-4}" fill="#3d2314"/><circle cx="158" cy="${y}" r="3"/><circle cx="172" cy="${y}" r="3"/><path d="M159 ${y+9} Q165 ${y+15} 171 ${y+9}" stroke="#e05a47" stroke-width="2.5" fill="none"/><rect x="145" y="${y+23}" width="40" height="${h}" rx="10" fill="#ff6b6b"/><rect x="149" y="${y+23+h}" width="13" height="${l}" rx="5" fill="#2b2d42"/><rect x="168" y="${y+23+h}" width="13" height="${l}" rx="5" fill="#2b2d42"/>`;return `<svg viewBox="0 0 400 260" xmlns="http://w3.org"><rect width="400" height="260" rx="18" fill="${d.bg}"/><ellipse cx="165" cy="204" rx="75" ry="12" fill="#000" opacity=".07"/>${p}<text x="285" y="140" font-size="56" text-anchor="middle">${d.ic}</text><text x="200" y="242" font-size="22" font-weight="bold" fill="#2b2d42" text-anchor="middle">${d.a} • ${d.ms}</text></svg>`}
-let i=0,flipped=false,seen=new Set(),tg=null,sc=0;
-function cur(){return D.find(x=>x.a===i)}
-function show(){const d=cur();flipped=false;front.classList.remove("hide");back.classList.add("hide");svg.innerHTML=pic(d);en.textContent=d.en;ms.textContent=d.ms+" • Tap card to flip";kj.textContent=d.kj;kn.textContent=d.kn;rm.textContent=d.rm;ir.innerHTML=d.ir?'<span style="background:#ff6b6b;color:#fff;padding:4px 12px;border-radius:99px;font-size:.8rem;font-weight:700">SPECIAL SOUND</span>':"";st.textContent=`Card ${i+1} of 11`;seen.add(i);if(seen.size===11){chime();st.textContent="🎉 All 11 ages viewed!"}}
-function say(t){if(!("speechSynthesis"in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="ja-JP";u.pitch=1.35;u.rate=.95;const v=speechSynthesis.getVoices().filter(x=>x.lang.toLowerCase().includes("ja"));const f=v.find(x=>/kyoko|haruka|nanami|ayumi|o-ren|female|google/i.test(x.name))||v.shift();if(f)u.voice=f;speechSynthesis.speak(u)}
-function chime(){try{const c=new(window.AudioContext||window.webkitAudioContext)();[523.25,659.25,783.99,1046.5].forEach((f,k)=>{const o=c.createOscillator(),g=c.createGain();o.type="triangle";o.frequency.value=f;g.gain.setValueAtTime(.18,c.currentTime+k*.12);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+k*.12+.3);o.connect(g);g.connect(c.destination);o.start(c.currentTime+k*.12);o.stop(c.currentTime+k*.12+.3)})}catch(e){}}
-function quiz(){const o=D.slice().sort(()=>Math.random()-.5).slice(0,4);tg=o.slice().sort(()=>Math.random()-.5).pop();gd.innerHTML="";o.forEach(d=>{const b=document.createElement("div");b.className="opt";b.innerHTML=pic(d)+`<b>${d.en}</b>`;b.onclick=()=>{if(d.a===tg.a){b.classList.add("ok");sc++;chime();qs.textContent=`⭐ Great! (${d.kn}) • Score: ${sc}`;setTimeout(quiz,1300)}else{b.classList.add("no");qs.textContent=`Try again! • Score: ${sc}`;say(tg.kn)}};gd.appendChild(b)});setTimeout(()=>say(tg.kn),250)}
-if("speechSynthesis"in window){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}
-cd.onclick=()=>{flipped=!flipped;front.classList.toggle("hide",flipped);back.classList.toggle("hide",!flipped);if(flipped)say(cur().kn)};
-pv.onclick=()=>{i=(i+10)%11;show()};nx.onclick=()=>{i=(i+1)%11;show()};sp.onclick=()=>say(cur().kn);rp.onclick=()=>tg&&say(tg.kn);
-t1.onclick=()=>{t1.classList.add("on");t2.classList.remove("on");v1.classList.remove("hide");v2.classList.add("hide")};
-t2.onclick=()=>{t2.classList.add("on");t1.classList.remove("on");v2.classList.remove("hide");v1.classList.add("hide");quiz()};
-show();
-</script></body></html>
+
+function getJapaneseVoice() {
+
+  const voices = window.speechSynthesis.getVoices();
+
+  const japaneseVoices = voices.filter(v =>
+    v.lang.toLowerCase().startsWith("ja")
+  );
+
+  // Prefer Japanese voices with a lighter, brighter sound.
+  const preferred = japaneseVoices.find(v =>
+    /nanami|haruka|kyoko|ayumi/i.test(v.name)
+  );
+
+  return preferred ||
+         japaneseVoices.find(v =>
+           v.lang.toLowerCase() === "ja-jp"
+         ) ||
+         japaneseVoices[0] ||
+         null;
+}
+
+function say(t) {
+
+  if (!("speechSynthesis" in window)) return;
+
+  const synth = window.speechSynthesis;
+
+  synth.cancel();
+
+  const u = new SpeechSynthesisUtterance(t);
+
+  u.lang = "ja-JP";
+  u.volume = 1.0;
+
+  // Brighter, lighter and more child-friendly delivery.
+  u.pitch = 1.65;
+  u.rate = 1.0;
+
+  const voice = getJapaneseVoice();
+
+  if (voice) {
+    u.voice = voice;
+  }
+
+  synth.resume();
+  synth.speak(u);
+}
